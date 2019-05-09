@@ -1,5 +1,12 @@
 
 class fraction():
+	""" 
+
+	Note: To work properly we assume that there is no other class
+		called fraction neither in the project nor in the modules that
+		the user has imported. Otherwise, all the operations will not
+		work properly.
+		"""
 	frac_count = 1
 
 	def __init__(self,numerator,denominator):
@@ -15,6 +22,24 @@ class fraction():
 
 	def __str__(self):
 		return (str(self.numerator)+'/'+str(self.denominator))
+
+	def __add__(self,other):
+		"""
+		Addition:
+		Receive as parameter either a fraction or an integer
+
+		"""
+		if('fraction' in str(type(other))):
+			new_numerator = self.numerator*other.denominator + other.numerator*self.denominator
+			new_denominator = self.denominator * other.denominator
+			new_frac = fraction(new_numerator, new_denominator)
+			return new_frac
+		elif('integer' in str(type(other))):
+			new_numerator = self.numerator + other.value * self.denominator
+			new_frac = fraction(new_numerator,self.denominator)
+			return new_frac
+		else:
+			raise Exception("Use an integer or fraction in the operator")
 
 	def invert(self):
 		assert (self.numerator!=0), "Numerator can't be zero"
@@ -89,6 +114,12 @@ class integer(fraction):
 		else:
 			return new_frac
 
+	def __floordiv__(self,other):
+		assert (other.value!=0), "Can't divide by zero"
+
+		new_int = integer(self.value//other.value)
+		return new_int
+
 	def set_value(self,value):
 		assert (type(value)==int), "Value should be integer"
 
@@ -101,13 +132,8 @@ class integer(fraction):
 		return self.int_count
 
 if __name__ == "__main__":
-	q = fraction(4,2)
-	q.invert()
-	q.reduce()
-	
-	print(q)
-
-	p = integer(4)
+	q = fraction(4,3)
 	w = integer(2)
-	z = (p/w)
-	print((z))
+	
+	z = (q+w)
+	print(z)
