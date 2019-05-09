@@ -1,7 +1,6 @@
 
 class fraction():
 	""" 
-
 	Note: To work properly we assume that there is no other class
 		called fraction neither in the project nor in the modules that
 		the user has imported. Otherwise, all the operations will not
@@ -27,7 +26,6 @@ class fraction():
 		"""
 		Addition:
 		Receive as parameter either a fraction or an integer
-
 		"""
 		if('fraction' in str(type(other))):
 			new_numerator = self.numerator*other.denominator + other.numerator*self.denominator
@@ -67,8 +65,19 @@ class fraction():
 			raise Exception("Use an integer or fraction in the operator")
 
 	def __truediv__(self,other):
-		#new_int = integer(self.value*other.value)
-		return self
+		if('fraction' in str(type(other))):
+			assert (other.get_numerator()==0), "Can't divide by zero"
+			new_numerator = self.numerator * other.get_denominator()
+			new_denominator = self.denominator * other.get_numerator()
+			new_frac = fraction(new_numerator,new_denominator)
+			return new_frac
+		elif('integer' in str(type(other))):
+			assert (other.get_value()), "Can't divide by zero"
+			new_denominator = self.denominator * other.get_value()
+			new_frac = fraction(self.numerator, new_denominator)
+			return new_frac
+		else:
+			raise Exception("Use an integer or fraction in the operator")
 
 	def invert(self):
 		assert (self.numerator!=0), "Numerator can't be zero"
@@ -137,8 +146,20 @@ class integer(fraction):
 			raise Exception("Integer or fraction expected")
 
 	def __sub__(self,other):
-		new_int = integer(self.value - other.value)
-		return new_int
+		if("fraction" in str(type(other))):
+			aux_frac = fraction(-other.get_numerator(),other.get_denominator())
+			new_frac = fraction.__sub__(aux_frac,self)
+			new_frac.reduce()
+			if(new_frac.get_denominator()==1):
+				new_int = integer(new_frac.get_numerator())
+				return new_int
+			else:
+				return new_frac
+		elif("integer" in str(type(other))):
+			new_int = integer(self.value - other.value)
+			return new_int
+		else:
+			raise Exception("Integer or fraction expected")
 
 	def __mul__(self,other):
 		new_int = integer(self.value*other.value)
@@ -156,6 +177,7 @@ class integer(fraction):
 			return new_frac
 
 	def __floordiv__(self,other):
+		assert ("integer" in str(type(other))), "Operand has to be integer"
 		assert (other.value!=0), "Can't divide by zero"
 
 		new_int = integer(self.value//other.value)
