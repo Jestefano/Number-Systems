@@ -66,6 +66,10 @@ class fraction():
 		else:
 			raise Exception("Use an integer or fraction in the operator")
 
+	def __truediv__(self,other):
+		#new_int = integer(self.value*other.value)
+		return self
+
 	def invert(self):
 		assert (self.numerator!=0), "Numerator can't be zero"
 
@@ -117,8 +121,20 @@ class integer(fraction):
 		return str(self.value)
 
 	def __add__(self,other):
-		new_int = integer(self.value + other.value)
-		return new_int 
+
+		if("fraction" in str(type(other))):
+			new_frac = fraction.__add__(other,self)
+			new_frac.reduce()
+			if(new_frac.get_denominator()==1):
+				new_int = integer(new_frac.get_numerator())
+				return new_int
+			else:
+				return new_frac
+		elif("integer" in str(type(other))):
+			new_int = integer(self.value + other.value)
+			return new_int 
+		else:
+			raise Exception("Integer or fraction expected")
 
 	def __sub__(self,other):
 		new_int = integer(self.value - other.value)
@@ -161,4 +177,4 @@ if __name__ == "__main__":
 	w = integer(2)
 	z = fraction(5,7)
 
-	print(q*z)
+	print(w+z)
