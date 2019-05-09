@@ -1,6 +1,6 @@
 
 class fraction():
-	num_frac = 0
+	frac_count = 1
 
 	def __init__(self,numerator,denominator):
 		assert (type(numerator)==int), "Numerator has to be int"
@@ -9,9 +9,9 @@ class fraction():
 
 		self.numerator = numerator
 		self.denominator = denominator
-		self.num_frac = fraction.num_frac
+		self.frac_count = fraction.frac_count
 
-		fraction.num_frac += 1
+		fraction.frac_count += 1
 
 	def __str__(self):
 		return (str(self.numerator)+'/'+str(self.denominator))
@@ -48,8 +48,57 @@ class fraction():
 
 		self.denominator = new_denominator
 
-	def get_num_frac(self):
-		return self.num_frac
+	def get_frac_count(self):
+		return self.frac_count
+
+
+class integer(fraction):
+	int_count = 1
+
+	def __init__(self,value):
+		assert (type(value)==int), "Value should be integer"
+
+		fraction.__init__(self,value,1)
+		self.value = value
+		self.int_count = integer.int_count
+		integer.int_count += 1
+
+	def __str__(self):
+		return str(self.value)
+
+	def __add__(self,other):
+		new_int = integer(self.value + other.value)
+		return new_int 
+
+	def __sub__(self,other):
+		new_int = integer(self.value - other.value)
+		return new_int
+
+	def __mul__(self,other):
+		new_int = integer(self.value*other.value)
+		return new_int
+
+	def __truediv__(self,other):
+		assert (other.value!=0), "Can't divide by zero"
+
+		new_frac = fraction(self.value,other.value)
+		new_frac.reduce()
+		if(new_frac.get_denominator()==1):
+			new_int = integer(new_frac.get_numerator())
+			return new_int
+		else:
+			return new_frac
+
+	def set_value(self,value):
+		assert (type(value)==int), "Value should be integer"
+
+		self.value = value
+
+	def get_value(self):
+		return self.value
+
+	def get_int_count(self):
+		return self.int_count
 
 if __name__ == "__main__":
 	q = fraction(4,2)
@@ -57,3 +106,8 @@ if __name__ == "__main__":
 	q.reduce()
 	
 	print(q)
+
+	p = integer(4)
+	w = integer(2)
+	z = (p/w)
+	print((z))
