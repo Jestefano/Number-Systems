@@ -162,19 +162,32 @@ class integer(fraction):
 			raise Exception("Integer or fraction expected")
 
 	def __mul__(self,other):
-		new_int = integer(self.value*other.value)
-		return new_int
 
-	def __truediv__(self,other):
-		assert (other.value!=0), "Can't divide by zero"
-
-		new_frac = fraction(self.value,other.value)
-		new_frac.reduce()
-		if(new_frac.get_denominator()==1):
-			new_int = integer(new_frac.get_numerator())
+		if("fraction" in str(type(other))):
+			new_frac = fraction.__mul__(other,self)
+			return new_frac
+		elif("integer" in str(type(other))):
+			new_int = integer(self.value*other.value)
 			return new_int
 		else:
+			raise Exception("Operator has to be integer or fraction")
+
+	def __truediv__(self,other):
+		if("integer" in str(type(other))):
+			assert (other.get_value()), "Can't divide by zero"
+			new_frac = fraction(self.value,other.get_value())
+			new_frac.reduce()
+			if(new_frac.get_denominator()==1):
+				new_int = integer(new_frac.get_numerator())
+				return new_int
+			else:
+				return new_frac
+		elif("fraction" in str(type(other))):
+			assert (other.get_numerator()), "Can't divide by zero"
+			new_frac = fraction.__mul__(other.reverse(),self)
 			return new_frac
+		else:
+			raise Exception("Operators have to be integer or fraction")
 
 	def __floordiv__(self,other):
 		assert ("integer" in str(type(other))), "Operand has to be integer"
@@ -195,8 +208,7 @@ class integer(fraction):
 		return self.int_count
 
 if __name__ == "__main__":
-	q = fraction(4,3)
-	w = integer(2)
-	z = fraction(5,7)
+	int1 = integer(4)
+	int2 = integer(1)
 
 	print(w+z)
