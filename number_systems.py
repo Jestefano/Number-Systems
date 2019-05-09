@@ -66,7 +66,7 @@ class fraction():
 
 	def __truediv__(self,other):
 		if('fraction' in str(type(other))):
-			assert (other.get_numerator()==0), "Can't divide by zero"
+			assert (other.get_numerator()!=0), "Can't divide by zero"
 			new_numerator = self.numerator * other.get_denominator()
 			new_denominator = self.denominator * other.get_numerator()
 			new_frac = fraction(new_numerator,new_denominator)
@@ -83,6 +83,7 @@ class fraction():
 		assert (self.numerator!=0), "Numerator can't be zero"
 
 		self.numerator,self.denominator = self.denominator,self.numerator
+		return self
 
 	def __gcd(a,b):
 		return (b if a%b==0 else fraction.__gcd(b,a%b))
@@ -91,6 +92,7 @@ class fraction():
 		gcd_ = fraction.__gcd(self.numerator,self.denominator)
 		self.numerator = self.numerator//gcd_
 		self.denominator = self.denominator//gcd_
+		return self
 
 	def get_numerator(self):
 		return self.numerator
@@ -148,7 +150,7 @@ class integer(fraction):
 	def __sub__(self,other):
 		if("fraction" in str(type(other))):
 			aux_frac = fraction(-other.get_numerator(),other.get_denominator())
-			new_frac = fraction.__sub__(aux_frac,self)
+			new_frac = fraction.__add__(aux_frac,self)
 			new_frac.reduce()
 			if(new_frac.get_denominator()==1):
 				new_int = integer(new_frac.get_numerator())
@@ -174,7 +176,7 @@ class integer(fraction):
 
 	def __truediv__(self,other):
 		if("integer" in str(type(other))):
-			assert (other.get_value()), "Can't divide by zero"
+			assert (other.get_value()!=0), "Can't divide by zero"
 			new_frac = fraction(self.value,other.get_value())
 			new_frac.reduce()
 			if(new_frac.get_denominator()==1):
@@ -183,8 +185,8 @@ class integer(fraction):
 			else:
 				return new_frac
 		elif("fraction" in str(type(other))):
-			assert (other.get_numerator()), "Can't divide by zero"
-			new_frac = fraction.__mul__(other.reverse(),self)
+			assert (other.get_numerator()!=0), "Can't divide by zero"
+			new_frac = fraction.__mul__(other.invert(),self)
 			return new_frac
 		else:
 			raise Exception("Operators have to be integer or fraction")
@@ -208,7 +210,7 @@ class integer(fraction):
 		return self.int_count
 
 if __name__ == "__main__":
-	int1 = integer(4)
-	int2 = integer(1)
+	int1 = integer(3)
+	int2 = integer(6)
 
-	print(w+z)
+	print(int1+int2)
