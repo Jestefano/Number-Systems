@@ -6,7 +6,7 @@ class fraction():
 		called fraction neither in the project nor in the modules that
 		the user has imported. Otherwise, all the operations will not
 		work properly.
-		"""
+	"""
 	frac_count = 1
 
 	def __init__(self,numerator,denominator):
@@ -37,6 +37,31 @@ class fraction():
 		elif('integer' in str(type(other))):
 			new_numerator = self.numerator + other.value * self.denominator
 			new_frac = fraction(new_numerator,self.denominator)
+			return new_frac
+		else:
+			raise Exception("Use an integer or fraction in the operator")
+
+	def __sub__(self,other):
+		"""This is a temporal comment about the implementation of sub """
+		if('fraction' in str(type(other))):
+			new_frac = fraction((-1)*other.get_numerator(),other.get_denominator())
+			return fraction.__add__(self,new_frac)
+		elif('integer' in str(type(other))):
+			new_int = integer((-1)*other.get_value())
+			return fraction.__add__(self,new_int)
+		else:
+			raise Exception("Use an integer or fraction in the operator")
+
+	def __mul__(self,other):
+
+		if('fraction' in str(type(other))):
+			new_numerator = self.numerator * other.get_numerator()
+			new_denominator = self.denominator * other.get_denominator()
+			new_frac = fraction(new_numerator,new_denominator)
+			return new_frac
+		elif('integer' in str(type(other))):
+			new_numerator = self.numerator * other.get_value()
+			new_frac = fraction(new_numerator, self.denominator)
 			return new_frac
 		else:
 			raise Exception("Use an integer or fraction in the operator")
@@ -134,6 +159,6 @@ class integer(fraction):
 if __name__ == "__main__":
 	q = fraction(4,3)
 	w = integer(2)
-	
-	z = (q+w)
-	print(z)
+	z = fraction(5,7)
+
+	print(q*z)
