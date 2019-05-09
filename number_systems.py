@@ -9,7 +9,7 @@ class fraction():
 
 		self.numerator = numerator
 		self.denominator = denominator
-		self.num_fract = num_fract
+		self.num_frac = fraction.num_frac
 
 		fraction.num_frac += 1
 
@@ -49,10 +49,11 @@ class fraction():
 		self.denominator = new_denominator
 
 	def get_num_frac(self):
-		return self.num_fract
+		return self.num_frac
 
 if __name__ == "__main__":
 	q = fraction(4,2)
 	q.invert()
 	q.reduce()
+	
 	print(q)
