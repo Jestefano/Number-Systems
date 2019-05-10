@@ -186,7 +186,8 @@ class integer(fraction):
 				return new_frac
 		elif("fraction" in str(type(other))):
 			assert (other.get_numerator()!=0), "Can't divide by zero"
-			new_frac = fraction.__mul__(other.invert(),self)
+			new_frac = integer.__mul__(self,other.invert())
+			other.invert()
 			return new_frac
 		else:
 			raise Exception("Operators have to be integer or fraction")
@@ -211,6 +212,13 @@ class integer(fraction):
 
 if __name__ == "__main__":
 	int1 = integer(3)
-	int2 = integer(6)
+	int2 = fraction(6,3)
 
-	print(int1+int2)
+	print(int1*int2)
+	print(int2*int1)
+	print(int1/int2)
+	print(int2/int1)
+	print(int1*int2)
+	print(int2*int1)
+	print(int1/int2)
+	print(int2/int1)
