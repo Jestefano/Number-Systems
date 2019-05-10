@@ -2,7 +2,7 @@
 
 ## How it works:
 
-
+You can declare either your fractions or your integers using the classes that I have implemented and start using the functions.
 
 ## How to use this .py:
 You can download this file and import it as a module using
